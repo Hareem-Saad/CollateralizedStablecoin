@@ -20,7 +20,7 @@ contract CollateralizedStablecoin is ERC20, Ownable {
     }
 
     event newDeposit (address indexed from, uint256 amount, uint256 exchange);
-    event newRedeem (address indexed from, uint256 amount, uint256 exchange);
+    event newRedeem (address indexed from, uint256 amount, uint256 tax, uint256 exchange);
     event withdrawn(address from, address to, uint amount, uint time);
 
     /**
@@ -64,7 +64,7 @@ contract CollateralizedStablecoin is ERC20, Ownable {
         // _burn(msg.sender, _amount * 10 ** 18 / ratio);
         _burn(msg.sender, _amount * 10 ** 18);
 
-        emit newRedeem(msg.sender, _amount * 10 ** 18, priceFeed);
+        emit newRedeem(msg.sender, RedeemedAmount, Tax, priceFeed);
 
         (bool sent,) = payable(msg.sender).call{value: RedeemedAmount}("");
         require(sent, "Failed to send Ether");
