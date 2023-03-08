@@ -56,7 +56,7 @@ contract CollateralizedStablecoin is ERC20, Ownable {
      */
     function withdrawCollateral(uint256 _amount) public {
         require(_amount > 0, "Amount must be greater than 0");
-        require(balanceOf(msg.sender) >= _amount, "Amount must be greater than 0");
+        require(balanceOf(msg.sender) >= _amount * 10 ** 18, "Amount must be lesser than your current balance");
 
         (uint256 RedeemedAmount, uint256 Tax) = calculatePriceForSale(_amount);
 
@@ -65,7 +65,7 @@ contract CollateralizedStablecoin is ERC20, Ownable {
         // _burn(msg.sender, _amount * 10 ** 18 / ratio);
         _burn(msg.sender, _amount * 10 ** 18);
 
-        emit newRedeem(msg.sender, _amount, priceFeed);
+        emit newRedeem(msg.sender, _amount * 10 ** 18, priceFeed);
 
         (bool sent,) = payable(msg.sender).call{value: RedeemedAmount}("");
         require(sent, "Failed to send Ether");
