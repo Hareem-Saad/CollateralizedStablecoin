@@ -28,7 +28,6 @@ contract CollateralizedStablecoin is ERC20, Ownable {
      * @param _amount of dollars (USD) you want to stake
      */
     function depositCollateral(uint256 _amount) public payable {
-        require(_amount > 0, "Amount must be greater than 0");
         uint256 tokensToMint = _amount * 10 ** 18 * ratio;
         require(_amount > 0 && tokensToMint <= supplyCap, "Amount must be greater than 0 and lower and equal to supplyCap");
         uint256 price = getExchangeRate(_amount);
